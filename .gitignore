@@ -6,3 +6,4 @@ out/
 src/main/resources/web/
 frontend/dist/
 frontend/node_modules/
+.intellijPlatform/
