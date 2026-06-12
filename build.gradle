@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij.platform' version '2.2.1'
+}
+
+group = 'com.github.sunrishe'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
+}
+
+dependencies {
+    intellijPlatform {
+        create('IC', '2024.3')
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        name = '阅读APP'
+        description = '配合阅读APP（Legado）在 IDEA 中阅读小说的插件'
+        ideaVersion {
+            sinceBuild = '243'
+            untilBuild = '243.*'
+        }
+    }
+}
+
+tasks {
+    withType(JavaCompile) {
+        sourceCompatibility = '21'
+        targetCompatibility = '21'
+    }
+    test {
+        useJUnitPlatform()
+    }
+}
+
+tasks.register('buildWeb', Exec) {
+    group = 'frontend'
+    workingDir = file('frontend')
+    commandLine = ['npm', 'run', 'build']
+}
+
+tasks.register('copyWeb', Copy) {
+    group = 'frontend'
+    from file('frontend/dist')
+    into file('src/main/resources/web')
+    dependsOn buildWeb
+}
+
+processResources {
+    dependsOn copyWeb
+}

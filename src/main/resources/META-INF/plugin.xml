@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<idea-plugin>
+    <id>com.github.sunrishe.legado_idea</id>
+    <name>阅读APP</name>
+    <version>1.0.0</version>
+    <vendor email="i@sunrishe.com" url="https://github.com/sunrishe/legado-vscode">sunrishe</vendor>
+
+    <description><![CDATA[
+        配合阅读APP（Legado）使用的 IDEA 插件，支持书架、阅读、书源/订阅源编辑。
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="阅读"
+                    anchor="right"
+                    factoryClass="com.github.sunrishe.legado_idea.LegadoToolWindowFactory"
+                    canCloseContents="true"/>
+
+        <applicationService serviceImplementation="com.github.sunrishe.legado_idea.settings.LegadoSettings"/>
+
+        <applicationConfigurable parentId="tools"
+                                 instance="com.github.sunrishe.legado_idea.settings.LegadoSettingsConfigurable"
+                                 id="com.github.sunrishe.legado_idea.settings.LegadoSettingsConfigurable"
+                                 displayName="阅读APP"/>
+    </extensions>
+
+    <actions>
+        <action id="Legado.OpenBookshelf"
+                class="com.github.sunrishe.legado_idea.OpenLegadoAction"
+                text="打开阅读APP书架"
+                description="打开阅读APP书架">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
