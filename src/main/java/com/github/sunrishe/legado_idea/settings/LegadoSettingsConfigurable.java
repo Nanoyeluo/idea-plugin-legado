@@ -1,6 +1,8 @@
 package com.github.sunrishe.legado_idea.settings;
 
 import com.github.sunrishe.legado_idea.util.UrlValidator;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.ui.components.JBTextField;
@@ -11,6 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 
 public final class LegadoSettingsConfigurable implements Configurable {
+    private static final Logger LOG = Logger.getInstance(LegadoSettingsConfigurable.class);
+
     private JPanel panel;
     private final JBTextField urlField = new JBTextField();
     private final JBTextField titleField = new JBTextField();
@@ -41,12 +45,18 @@ public final class LegadoSettingsConfigurable implements Configurable {
     @Override
     public void apply() throws ConfigurationException {
         String url = urlField.getText().trim();
+        LOG.info("LegadoSettingsConfigurable.apply() called with url=" + url);
         if (!UrlValidator.isValid(url)) {
+            LOG.warn("LegadoSettingsConfigurable.apply() invalid url: " + url);
             throw new ConfigurationException("WEB 服务地址格式不正确，应为 http://IP:PORT");
         }
         LegadoSettings settings = LegadoSettings.getInstance();
         settings.setWebServeUrl(url);
         settings.setPanelTitle(titleField.getText().trim());
+        LOG.info("LegadoSettingsConfigurable.apply() publishing settings changed event");
+        ApplicationManager.getApplication().getMessageBus()
+                .syncPublisher(LegadoSettingsChangeListener.TOPIC)
+                .settingsChanged();
     }
 
     @Override

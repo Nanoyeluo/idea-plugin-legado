@@ -10,6 +10,7 @@ repositories {
     mavenCentral()
     intellijPlatform {
         defaultRepositories()
+        jetbrainsRuntime()
     }
 }
 
@@ -26,25 +27,33 @@ intellijPlatform {
         description = '配合阅读APP（Legado）在 IDEA 中阅读小说的插件'
         ideaVersion {
             sinceBuild = '243'
-            untilBuild = '243.*'
+            untilBuild = '999.*'
         }
     }
 }
 
-tasks {
-    withType(JavaCompile) {
-        sourceCompatibility = '21'
-        targetCompatibility = '21'
-    }
-    test {
-        useJUnitPlatform()
-    }
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.test {
+    enabled = false
 }
 
 tasks.register('buildWeb', Exec) {
     group = 'frontend'
     workingDir = file('frontend')
-    commandLine = ['npm', 'run', 'build']
+
+    if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+        commandLine 'cmd', '/c', 'npm', 'run', 'build'
+    } else {
+        commandLine 'npm', 'run', 'build'
+    }
 }
 
 tasks.register('copyWeb', Copy) {

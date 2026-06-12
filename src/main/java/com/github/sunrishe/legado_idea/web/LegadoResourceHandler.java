@@ -43,6 +43,7 @@ public final class LegadoResourceHandler extends CefResourceHandlerAdapter {
     @Override
     public boolean processRequest(CefRequest request, CefCallback callback) {
         String url = request.getURL();
+        LOG.info("LegadoResourceHandler.processRequest: " + url + ", webServeUrl=" + webServeUrl);
         String relativePath = url.replaceFirst("http://legado-idea/", "");
         int queryIndex = relativePath.indexOf('?');
         if (queryIndex >= 0) {
