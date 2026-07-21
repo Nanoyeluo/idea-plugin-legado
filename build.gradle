@@ -26,7 +26,7 @@ intellijPlatform {
         name = '阅读APP'
         description = '配合阅读APP（Legado）在 IDEA 中阅读小说的插件'
         ideaVersion {
-            sinceBuild = '243'
+            sinceBuild = '262'
             untilBuild = '999.*'
         }
     }
