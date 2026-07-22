@@ -29,8 +29,10 @@ const saveBookProgress = (bookProgress) =>
 const saveBookProgressWithBeacon = (bookProgress) => {
   if (!bookProgress) return;
   // 常规请求可能会被取消 使用Fetch keep-alive 或者 navigator.sendBeacon
-  // 通过 /api/* 代理避免 JCEF 跨域限制
-  navigator.sendBeacon("/api/saveBookProgress", JSON.stringify(bookProgress));
+  navigator.sendBeacon(
+    `${WEB.getLegadoWebServeUrl()}/saveBookProgress`,
+    JSON.stringify(bookProgress)
+  );
 };
 
 const getBookShelf = () => ajax.get("/getBookshelf");

@@ -175,11 +175,35 @@ const setIP = () => {
     },
     inputErrorMessage: "无效的地址",
     closeOnClickModal: false,
+    beforeClose: (action, instance, done) => {
+      if (action !== "confirm") {
+        done();
+        return;
+      }
+      // store.setNewConnect(true);
+      instance.confirmButtonLoading = true;
+      instance.confirmButtonText = "正在连接";
+      WEB.checkLegadoWebServeUrl(instance.inputValue)
+        .then(() => {
+          // store.setConnectType("success");
+          // store.setConnectStatus("已连接 ");
+          // store.setNewConnect(false);
+          done();
+        })
+        .catch(() => {
+          instance.confirmButtonLoading = false;
+          instance.confirmButtonText = "确定";
+          // store.setConnectType("danger");
+          // store.setConnectStatus("连接失败");
+          // store.setNewConnect(false);
+          ElMessage.error(`${instance.inputValue} 连接失败`);
+        });
+    }
   })
     .then(({ value }) => {
       WEB.setLegadoWebServeUrl(value);
       ElMessage.success({
-        message: `${value} 已保存，即将重新加载`,
+        message: `${value} 连接成功，即将重新加载`,
         duration: 1000,
         onClose: () => {
           WEB.reload();

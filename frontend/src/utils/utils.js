@@ -1,4 +1,5 @@
 import { formatDate } from "@vueuse/shared";
+import WEB from "@/api/web";
 
 export const isLegadoUrl = (/** @type {string} */ url) =>
   /,\s*\{/.test(url) ||
@@ -12,7 +13,8 @@ export const isLegadoUrl = (/** @type {string} */ url) =>
  */
 export function getImageFromLegado(src) {
   return (
-    "/api/image?path=" +
+    WEB.getLegadoWebServeUrl() +
+    "/image?path=" +
     encodeURIComponent(src) +
     "&url=" +
     encodeURIComponent(sessionStorage.getItem("bookUrl")) +

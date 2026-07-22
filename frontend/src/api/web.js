@@ -21,11 +21,10 @@ const setLegadoWebServeUrl = (url) => {
   }
 };
 
-// 通过插件代理 /api/* 测试当前保存的 Legado 后端是否可达
-const checkLegadoWebServeUrl = () => {
+const checkLegadoWebServeUrl = (url) => {
   return axios
     .create({
-      baseURL: "/api",
+      baseURL: url,
       timeout: 3000
     })
     .get("/getBookshelf");
