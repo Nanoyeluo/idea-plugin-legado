@@ -50,16 +50,13 @@
 </template>
 <script setup>
 import { dateFormat } from "../utils/utils";
-import WEB from "@/api/web";
 const props = defineProps(["books", "isSearch"]);
 const emit = defineEmits(["bookClick"]);
 const handleClick = (book) => emit("bookClick", book);
 const getCover = (coverUrl) => {
   return /^data:/.test(coverUrl)
     ? coverUrl
-    : WEB.getLegadoWebServeUrl() +
-        "/cover?path=" +
-        encodeURIComponent(coverUrl);
+    : "/api/cover?path=" + encodeURIComponent(coverUrl);
 };
 
 const subJustify = computed(() =>
